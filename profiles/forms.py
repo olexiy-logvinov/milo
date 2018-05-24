@@ -25,3 +25,10 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('birthday', 'email', 'first_name', 'last_name')
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateUserForm, self).__init__(*args, **kwargs)
+        # try:
+        self.fields['birthday'].initial = self.instance.profile.birthday
+        # except:
+        #     pass

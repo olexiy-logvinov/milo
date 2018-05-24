@@ -31,14 +31,16 @@ def edit_user(request, user_id):
 
     user = get_object_or_404(User, pk=user_id)
     if request.method == 'POST':
-        form = UpdateUserForm(request.POST)
+        form = UpdateUserForm(request.POST, instance=user)
         if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()
             user.profile.birthday = form.cleaned_data.get('birthday')
             user.save()
             return redirect('/user/{}/'.format(user.id))
     else:
         form = UpdateUserForm(instance=user)
-    return render(request, 'edit_user.html', {'form': form})
+    return render(request, 'edit_user.html', {'form': form, 'user': user})
 
 
 def create_user(request):
@@ -68,10 +70,14 @@ def export_csv(request):
         bizzfuzz = u.profile.bizz_fuzz()
         if not bizzfuzz:
             bizzfuzz = u.profile.randint
+        try:
+            birthday = u.profile.birthday.strftime('%-m/%-d/%Y')
+        except AttributeError:  # birthday == None
+            birthday = '---'
 
         wr.writerow([
             u.username,
-            u.profile.birthday.strftime('%-m/%-d/%Y'),
+            birthday,
             allowed[u.profile.allowed()],
             u.profile.randint,
             bizzfuzz
@@ -79,5 +85,5 @@ def export_csv(request):
 
     buffer.seek(0)
     response = HttpResponse(buffer, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=stockitems_misuper.csv'
+    response['Content-Disposition'] = 'attachment; filename=users.csv'
     return response

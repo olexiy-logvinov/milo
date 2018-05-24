@@ -1,0 +1,7 @@
+"Username","Birthday","Eligible","Random Number","BizzFuzz"
+"homer","5/31/1970","allowed","89","89"
+"marge","1/11/1971","allowed","3","Bizz"
+"bart","11/30/2003","allowed","79","79"
+"lisa","9/1/2006","blocked","15","BizzFuzz"
+"ole","---","blocked","19","19"
+"maggie","4/3/2008","blocked","20","Fuzz"

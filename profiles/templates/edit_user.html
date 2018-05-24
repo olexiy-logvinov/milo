@@ -6,12 +6,12 @@
 {% load profiles_extras %}
 
 {% block metatags %}
-<title>Edit User: {{ user }}</title>
+<title>Edit User: {{ user.username }}</title>
 {% endblock %}
 
 {% block content %}
 <h1>
-    Edit User: {{ user }}
+    Edit User: {{ user.username }}
 </h1>
 
 <form method="post">{% csrf_token %}

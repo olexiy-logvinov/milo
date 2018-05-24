@@ -18,7 +18,7 @@
     </tr>
     {% for u in users %}
     <tr>
-        <td><a href="{% url 'user' u.id %}">{{ u }}</a></td>
+        <td><a href="{% url 'user' u.id %}">{{ u.username }}</a></td>
         <td>{{ u.profile.birthday }}</td>
         <td>{% allowed u.profile %}</td>
         <td>{{ u.profile.randint }}</td>
