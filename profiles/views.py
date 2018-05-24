@@ -1,5 +1,7 @@
+import io
+import csv
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from .forms import SignUpForm, UpdateUserForm
 
@@ -52,3 +54,30 @@ def create_user(request):
     else:
         form = SignUpForm()
     return render(request, 'create_user.html', {'form': form})
+
+
+def export_csv(request):
+
+    allowed = {True: 'allowed', False: 'blocked'}
+    buffer = io.StringIO()
+    wr = csv.writer(buffer, quoting=csv.QUOTE_ALL)
+    wr.writerow([
+        'Username', 'Birthday', 'Eligible', 'Random Number', 'BizzFuzz'
+    ])
+    for u in User.objects.all():
+        bizzfuzz = u.profile.bizz_fuzz()
+        if not bizzfuzz:
+            bizzfuzz = u.profile.randint
+
+        wr.writerow([
+            u.username,
+            u.profile.birthday.strftime('%-m/%-d/%Y'),
+            allowed[u.profile.allowed()],
+            u.profile.randint,
+            bizzfuzz
+        ])
+
+    buffer.seek(0)
+    response = HttpResponse(buffer, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=stockitems_misuper.csv'
+    return response
