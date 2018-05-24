@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load profiles_extras %}
+
+{% block metatags %}
+<title>User: {{ user.username }}</title>
+{% endblock %}
+
+{% block content %}
+<h1>
+    {{ user.username }}
+</h1>
+
+<table class="table">
+    <tr>
+        <th>Birthday</th>
+        <td>{{ user.profile.birthday }}</td>
+    </tr>
+    <tr>
+        <th>Eligible</th>
+        <td>
+            {% allowed user.profile %}
+        </td>
+    </tr>
+    <tr>
+        <th>BizzFuzz</th>
+        <td>
+            {{ user.profile.randint }}
+            {% bizzfuzz user.profile %}
+        </td>
+    </tr>
+</table>
+
+
+<a class="btn btn-primary" href="{% url 'edit_user' user.id %}">
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+</a>
+
+<a class="btn btn-danger" href="{% url 'delete_user' user.id %}" onclick="return confirm('Are you sure?')">
+    <span class="glyphicon glyphicon-trash"></span>
+    Delete
+</a>
+
+{% endblock %}
