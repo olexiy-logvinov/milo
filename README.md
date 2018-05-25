@@ -12,6 +12,7 @@ git clone git@github.com:olexiy-logvinov/milo.git
 cd milo
 pip install -r requirements.txt
 ./manage.py migrate
+./manage.py test
 ./manage.py runserver
 
 ```
@@ -27,7 +28,8 @@ Now you should be able to [load the home page](http://127.0.0.1:8000/)
    * deleting user
    * editing user
 
-* created two template tags - "allowed" and "bizzfuzz"   
+* created two template tags - "allowed" and "bizzfuzz"
+* wrote several unit tests in tests.py   
 * added a [link for downloading users csv file](http://127.0.0.1:8000/export_to_csv) on a home page. Exporting users to a native xlsx file format would require installing **openpyxl** library, so I decided to save time and use a standard **csv** library instead.
 
 ### Additional Info
